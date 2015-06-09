@@ -1,8 +1,8 @@
 {-# LANGUAGE StandaloneDeriving #-}
 module Example where
 
-import Binocular
-import Control.Lens
+import Control.Optics.Field
+import Control.Optics.Field.Internal
 
 data A = A1 | A2
 data B = B
@@ -35,28 +35,28 @@ t31 = T3 (A1, B)
 z131 :: Z
 z131 = Z1 t31
 
-t1_ :: Binocle' T A
+t1_ :: Binoculars' T A
 t1_ f t = case t of
-  T1 a -> morph $ T1 <$> f a
-  _ -> nothing $ f undefined
+  T1 a -> T1 <$> f a
+  _ -> nothing
 
-t2_ :: Binocle' T B
+t2_ :: Binoculars' T B
 t2_ f t = case t of
-  T2 b -> morph $ T2 <$> f b
-  _ -> nothing $ f undefined
+  T2 b -> T2 <$> f b
+  _ -> nothing
 
-t3_ :: Binocle' T (A, B)
+t3_ :: Binoculars' T (A, B)
 t3_ f t = case t of
-  T3 x -> morph $ T3 <$> f x
-  _ -> nothing $ f undefined
+  T3 x -> T3 <$> f x
+  _ -> nothing
 
-z0_ :: Binocle' Z ()
+z0_ :: Binoculars' Z ()
 z0_ f z = case z of
-  Z0 -> morph $ const Z0 <$> f ()
-  _ -> nothing $ f undefined
+  Z0 -> const Z0 <$> f ()
+  _ -> nothing
 
-z1_ :: Binocle' Z T
+z1_ :: Binoculars' Z T
 z1_ f z = case z of
-  Z1 t -> morph $ Z1 <$> f t
-  _ -> nothing $ f undefined
+  Z1 t -> Z1 <$> f t
+  _ -> nothing
 
