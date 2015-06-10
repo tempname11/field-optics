@@ -1,4 +1,4 @@
-module Control.Optics.Field (
+module Extra.Field.Optics (
   setMay,
   viewMay,
   overMay,

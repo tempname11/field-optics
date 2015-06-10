@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE Rank2Types #-}
-module Control.Optics.Field.Internal (
+module Extra.Field.Optics.Internal (
   Binoculars,
   Binoculars',
   FunctorMay,
