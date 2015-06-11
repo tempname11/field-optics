@@ -1,3 +1,4 @@
+{-# LANGUAGE Rank2Types #-}
 module Extra.Field.Optics (
   setMay,
   viewMay,
@@ -5,9 +6,12 @@ module Extra.Field.Optics (
   (^.?),
   (%~?),
   (.~?),
+  by,
 ) where
 
 import Control.Applicative (Const (Const), getConst)
+import qualified Data.Map as M
+import Extra.Field.Optics.Internal
 
 --------------------------------------------------------------------------------
 
@@ -26,3 +30,8 @@ overMay l f s = l (Just . f) s
 (^.?) = flip viewMay
 (%~?) = overMay
 (.~?) = setMay
+
+by :: Ord k => k -> Binoculars' (M.Map k v) v
+by k f m = case M.lookup k m of
+  Just v -> fmap (\z -> M.insert k z m) (f v)
+  _ -> nothing
