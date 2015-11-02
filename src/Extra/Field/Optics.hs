@@ -7,11 +7,13 @@ module Extra.Field.Optics (
   (%~?),
   (.~?),
   by,
+  useMay,
 ) where
 
 import Control.Applicative (Const (Const), getConst)
 import qualified Data.Map as M
 import Extra.Field.Optics.Internal
+import Control.Monad.State (MonadState, gets)
 
 --------------------------------------------------------------------------------
 
@@ -26,6 +28,10 @@ viewMay l s = getConst $ l (Const . Just) s
 -- over :: ((a -> Identity b) -> s -> Identity t) -> (a -> b) -> s -> t
 overMay :: ((a -> Maybe b) -> s -> Maybe t) -> (a -> b) -> s -> Maybe t
 overMay l f s = l (Just . f) s
+
+useMay :: MonadState s m =>
+          ((a -> Const (Maybe a) a) -> s -> Const (Maybe a) s) -> m (Maybe a)
+useMay l = gets (viewMay l)
 
 (^.?) = flip viewMay
 (%~?) = overMay
