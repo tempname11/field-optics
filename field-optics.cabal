@@ -5,7 +5,7 @@ name:                field-optics
 version:             0.1.0.0
 -- synopsis:            
 -- description:         
--- license:             
+license:             MIT
 license-file:        LICENSE
 author:              Vladimir Semyonov
 maintainer:          tempname011@gmail.com
