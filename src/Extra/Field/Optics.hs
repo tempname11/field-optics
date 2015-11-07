@@ -33,6 +33,10 @@ useMay :: MonadState s m =>
           ((a -> Const (Maybe a) a) -> s -> Const (Maybe a) s) -> m (Maybe a)
 useMay l = gets (viewMay l)
 
+-- same as the Control.Lens fixities for (^.), (%~), (.~) respectively.
+infixl 8 ^.?
+infixr 4 %~?
+infixr 4 .~?
 (^.?) = flip viewMay
 (%~?) = overMay
 (.~?) = setMay
