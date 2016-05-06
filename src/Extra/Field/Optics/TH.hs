@@ -7,6 +7,8 @@ module Extra.Field.Optics.TH (
 import Control.Lens (Lens')
 import Extra.Field.Optics.Internal (nothing, Binoculars')
 import Language.Haskell.TH hiding (appE, appT)
+import Data.List.Split (splitOn)
+import Data.Char (toLower)
 import Data.Traversable (for)
 import Debug.Trace
 
@@ -23,10 +25,11 @@ a'n_ f s = case s of
 
 --debug x = traceShow (lines $ pprint x) x
 
-makeFieldOpticsWith :: (String -> Maybe String) -> Name -> Q [Dec]
+makeFieldOpticsWith :: (String -> String -> Maybe String) -> Name -> Q [Dec]
 makeFieldOpticsWith opticNaming tname = do
-  let renamed = fmap mkName . opticNaming . nameBase
-  let failNamed = fail . (++ nameBase tname) . (++ " when making optics for ")
+  let renamed = fmap mkName . opticNaming tstr . nameBase
+      tstr = nameBase tname
+  let failNamed = fail . (++ tstr) . (++ " when making optics for ")
   info <- reify tname
   cs <- case info of
     TyConI dec -> case dec of
@@ -72,5 +75,12 @@ decsOf cname fname lname total ours st at may = [dec1, dec2]
 makeFieldOptics :: Name -> Q [Dec]
 makeFieldOptics = makeFieldOpticsWith defaultOpticNaming
 
-defaultOpticNaming :: String -> Maybe String
-defaultOpticNaming s = Just $ s ++ "_"
+-- XXX shared with hh
+afterSingleQuote :: String -> String
+afterSingleQuote s =
+  case splitOn "'" s of
+    [_, b] -> b
+    _ -> s
+
+defaultOpticNaming :: String -> String -> Maybe String
+defaultOpticNaming t s = Just $ map toLower t ++ "'" ++ afterSingleQuote s ++ "_"
