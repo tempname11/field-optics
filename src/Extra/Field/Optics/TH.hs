@@ -33,7 +33,7 @@ makeFieldOpticsWith opticNaming tname = do
   info <- reify tname
   cs <- case info of
     TyConI dec -> case dec of
-      DataD _cxt _tn _tvs cs _der -> return cs
+      DataD _cxt _tn _tvs _mk cs _der -> return cs
       _ -> failNamed "Expected a data declaration"
     _ -> failNamed "Expected a type constructor"
   let c = length cs > 1
