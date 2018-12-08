@@ -65,7 +65,7 @@ decsOf cname fname lname total ours st at may = [dec1, dec2]
   patFrom n = if n == ours then VarP a else WildP
   body1 = NormalB ((VarE 'fmap) `AppE` lambda `AppE` fa)
   body2 = NormalB (VarE 'nothing)
-  lambda = LamE [VarP z] $ RecUpdE (VarE s) [(fname, VarE z)]
+  lambda = LamE [VarP z] $ RecUpdE (SigE (VarE s) st) [(fname, VarE z)]
   a = mkName "a"
   s = mkName "s"
   z = mkName "z"
